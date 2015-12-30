@@ -1,0 +1,28 @@
+mysql:
+  image: mysql:5.6
+  container_name: drupal-project_db
+  environment:
+    MYSQL_ROOT_PASSWORD: rootpasswd
+    MYSQL_DATABASE: drupal
+    MYSQL_USER: drupal
+    MYSQL_PASSWORD: drupal
+  volumes:
+  	# Volume for db conf files.
+    -  ./devops/database/conf/mysql/conf.d:/etc/mysql/conf.d
+    # Volume for db storage.
+    -  ./database/mysql:/var/lib/mysql
+  ports:
+    - "3306"
+web:
+  build: ./devops/web
+  container_name: drupal-project_web
+  privileged: true
+  ports:
+    - "8888:80"
+    - "443"
+    - "22"
+  volumes:
+  	# Drupal files here.
+    - ./docroot/:/var/www
+  links:
+    - mysql
