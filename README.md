@@ -51,3 +51,5 @@ cd to directory with this repo, run:
 `docker exec -it drupal-project_web bash`
 
 Go to `/var/www` folder to work with your site.
+
+Site will be avaliable on http://localhost:8888
