@@ -45,7 +45,7 @@ Check instalation:
 ### Launch local drupal environment
 cd to directory with this repo, run:
 
-`docker-compose -d`
+`docker-compose up -d`
 
 ### Enter your web container
 `docker exec -it drupal-project_web bash`
