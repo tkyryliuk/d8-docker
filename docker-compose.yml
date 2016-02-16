@@ -1,6 +1,6 @@
 mysql:
   image: mysql:5.6
-  container_name: drupal-project_db
+  container_name: CHANGE_ME_db
   environment:
     MYSQL_ROOT_PASSWORD: rootpasswd
     MYSQL_DATABASE: drupal
@@ -11,15 +11,38 @@ mysql:
     -  ./storage/mysql:/var/lib/mysql
   ports:
     - "3306"
-web:
-  image: tbfisher/drupal-nginx:php-5.6.x
-  container_name: drupal-project_web
+mail:
+  # https://hub.docker.com/r/mailhog/mailhog/
+  image: mailhog/mailhog
+  container_name: CHANGE_ME_mail
   ports:
-    - "8888:80"
+   - "1025"
+   - "8025"
+  environment:
+    VIRTUAL_HOST: mail.CHANGE_ME.loc.dev
+    VIRTUAL_PORT: 8025
+adminer:
+  image: clue/adminer
+  container_name: CHANGE_ME_adminer
+  ports:
+   - "80"
+  environment:
+    VIRTUAL_HOST: adminer.CHANGE_ME.loc.dev
+  links:
+    - mysql
+web:
+  build: ./docker/web
+  container_name: CHANGE_ME_web
+  ports:
+    - "80"
     - "443"
     - "22"
   volumes:
     # Drupal files here.
     - ./docroot/:/var/www
+    - ./dummyfile:/tmp/dummyfile
+  environment:
+    VIRTUAL_HOST: CHANGE_ME.loc.dev
   links:
     - mysql
+    - mail
