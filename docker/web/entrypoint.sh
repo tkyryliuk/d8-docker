@@ -1,8 +1,6 @@
 #!/bin/bash
 set -e
 
-cat /usr/local/share/logo.txt
-
 if [ -f /tmp/dummyfile ]; then
     echo -e "Mapping UIDs...\n"
     OLDUID=`id -u www-data`
