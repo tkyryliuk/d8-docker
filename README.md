@@ -26,6 +26,7 @@
    `docker-compose up -d`
 
 10. Site will be available on next addresses:
+
 * http://change_me.loc.dev/
 * http://mail.change_me.loc.dev/
 * http://adminer.change_me.loc.dev/
