@@ -1,4 +1,4 @@
-## Prepare your local machine
+## Docker local development environment
 ### Ubuntu 14.04, 15.10 instalation
 
 1. Install docker and Docker compose.
