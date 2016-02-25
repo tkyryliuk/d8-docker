@@ -1,33 +1,57 @@
-## Docker local development environment
-### Ubuntu 14.04, 15.10 instalation
+Docker local dev environment for Drupal
+===================
 
-1. Install docker and Docker compose.
-2. Install dnsmasq (and forget about updating /etc/hosts).
+Ubuntu 14.04, 15.04, 15.10 installation
+-------------
+### 1. Prepare your local machine.
+* Install docker and Docker compose.
+* Install dnsmasq
+```
+sudo apt-get install dnsmasq
+```
 
-    `sudo apt-get install dnsmasq`
+Dnsmasq is  a local DNS server which will route all addresses like http://example.loc to your local machine, without any changes to /etc/hosts 
 
-3. Edit dnsmasq config:
+* Edit dnsmasq config:
+```
+sudo nano /etc/dnsmasq.conf
+```
+* Add following line at the end of the file:
+```
+address=/loc/127.0.0.1
+```
+* Restart dnsmasq
+```
+sudo service dnsmasq restart
+```
+* Run nginx_proxy container.
+```
+docker run -d -p 80:80 -v /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy
+```
+It’s a special docker container with Nginx reverse proxy, which will be exposed on 80 port  and will redirect all incoming requests to other docker containers inside you machine. Read more on its page.
 
-    `sudo nano /etc/dnsmasq.conf`
+----------
 
-4. Add folowing line at the and of the file:
+### 2. Start new project.
+* Clone this repo to your local machine.
+* Change all occurrences of `CHANGE_ME` in `docker-compose.yml` and `ssh.sh` files.
+This needs to be done because all your containers must have a namespace. And you should be able to find anyone of them in list in future. So project name would be good for this.
 
-    `address=/loc.dev/127.0.0.1`
+* Cd to project directory.
+* Fire up:
+```
+docker-compose up -d
+```
 
-5. Run [nginx_proxy](https://hub.docker.com/r/jwilder/nginx-proxy/) container.
+-d flag here means Demonize mode, you can skip this and will see what happens under the hood.
+By default docker compose get all configuration from `docker-compose.yml` file and create all containers defined there.
 
-    `docker run -d -p 80:80 -v /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy`
+> **Note:**
 
-6. Clone this repo to your local machine.
-7. Change all occurrences of CHANGE_ME in docker-compose.yml and ssh.sh files.
-8. cd to project directory.
-9. Fire up:
+> Site will be available on next addresses:
 
-   `docker-compose up -d`
+> http://change_me.loc
 
-10. Site will be available on next addresses:
+> http://mail.change_me.loc
 
-* http://change_me.loc.dev/
-* http://mail.change_me.loc.dev/
-* http://adminer.change_me.loc.dev/
-
+> http://adminer.change_me.loc
